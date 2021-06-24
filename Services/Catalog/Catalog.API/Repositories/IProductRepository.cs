@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Catalog.API.Repositories
 {
-    interface IProductRepository
+    public interface IProductRepository
     {
         Task<IEnumerable<Product>> GetProducts();
-        Task<Product> GetProduct(string id);
+        Task<Product> GetProductById(string id);
         Task<IEnumerable<Product>> GetProductsByName(string name);
         Task<IEnumerable<Product>> GetProductsByCategory(string categoryName);
 

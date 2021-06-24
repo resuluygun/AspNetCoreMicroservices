@@ -10,9 +10,9 @@ namespace Catalog.API.Repositories
 {
     public class ProductRepository : IProductRepository
     {
-        private readonly CatalogContext _context;
+        private readonly ICatalogContext _context;
 
-        public ProductRepository(CatalogContext context)
+        public ProductRepository(ICatalogContext context)
         {
             _context = context;
         }
@@ -25,7 +25,7 @@ namespace Catalog.API.Repositories
                         .Find(p => true)
                         .ToListAsync();
         }
-        public async Task<Product> GetProduct(string id)
+        public async Task<Product> GetProductById(string id)
         {
             return await _context.Products.Find(p => p.Id == id).FirstOrDefaultAsync();
         }
@@ -51,9 +51,9 @@ namespace Catalog.API.Repositories
 
         public async Task<bool> UpdateProduct(Product product)
         {
-            var updateResult = _context.Products.ReplaceOneAsync(filter :p => p.Id == product.Id, replacement: product);
+            var updateResult = await _context.Products.ReplaceOneAsync(filter :p => p.Id == product.Id, replacement: product);
 
-            return updateResult.Result.IsAcknowledged && updateResult.Result.ModifiedCount > 0;
+            return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
         }
 
         public async Task<bool> DeleteProduct(string id)
